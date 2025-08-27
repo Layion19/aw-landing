@@ -1,26 +1,211 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ========== Base / Fond ========== */
+html, body { height: 100%; }
+body{
+  margin:0;
+
+  /* NOUVEAU : gradient élastique qui couvre toute la fenêtre */
+  background-color: #0b2a6b; /* couleur de secours sombre */
+  background-image: radial-gradient(
+    farthest-corner at 50% 30%,
+    #60a5fa 0%,
+    #2563eb 60%,
+    #1e3a8a 100%
+  );
+  background-repeat: no-repeat;
+  background-attachment: fixed;   /* pas de “cassure” au scroll desktop */
+  background-size: cover;         /* couvre toute la fenêtre, peu importe la taille */
+
+  color:#eaf2ff;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ========== Home centré (avec “filets de sécurité”) ========== */
+.stage{
+  display:grid;
+  place-items:center;
+  min-height: 100svh;
+  min-height: 100vh;
+  height: auto;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.home-center{
+  display:grid;
+  place-items:center;
+  min-height:100svh;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.canvasWrap, .canvasWrap canvas{
+  width: min(1200px, 95vw);
+  height: min(600px, 60vh);
+  display:block;
+}
+
+/* ========== Logo final (AW) : agrandissement avec léger rebond) ========== */
+.logoWrap{
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  transform-origin: 50% 60%;
+  animation: emerge 3000ms cubic-bezier(.25,1.25,.5,1) forwards;
+  z-index: 10;
+}
+.finalLogo{
+  width: min(720px, 70vw);
+  height:auto;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
+}
+@keyframes emerge{
+  0%   { opacity:0; transform: scale(0.10); }
+  60%  { opacity:1; transform: scale(1.05); }
+  80%  {           transform: scale(0.97); }
+  100% { opacity:1; transform: scale(1); }
+}
+
+/* ========== Hamburger (fixé en haut à droite partout) ========== */
+.aw-burger{
+  position:fixed;
+  top:20px;
+  right:20px;
+  z-index:90;
+  width:42px; height:42px;
+  border-radius:10px;
+  background: rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.15);
+  backdrop-filter: blur(4px);
+  display:grid; place-items:center;
+  cursor:pointer;
+}
+.aw-burger span{
+  width:20px; height:2px;
+  background:#fff; border-radius:2px;
+  display:block;
+}
+.aw-burger span + span{ margin-top:4px; }
+
+/* ========== Menu latéral ========== */
+.aw-backdrop{
+  position:fixed; inset:0;
+  background: rgba(0,0,0,.45);
+  opacity:0; pointer-events:none;
+  transition: opacity .25s ease;
+  z-index:79;
+}
+.aw-backdrop.open{ opacity:1; pointer-events:auto; }
+
+.aw-menu{
+  position:fixed; top:0; right:0;
+  height:100%; width:260px;
+  background: rgba(15,23,42,0.98);
+  color:#fff;
+  padding:2rem 1rem 1.5rem;
+  transform: translateX(100%);
+  transition: transform .3s ease-in-out;
+  z-index:80;
+  box-shadow: -16px 0 32px rgba(0,0,0,.25);
+}
+.aw-menu.open{ transform: translateX(0); }
+
+.aw-menu header{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:1.25rem;
+}
+.aw-menu h2{
+  margin:0;
+  font-size:1.5rem;
+  color:#facc15;
+  letter-spacing:.5px;
+}
+.aw-menu .close{
+  width:36px; height:36px; border-radius:10px;
+  display:grid; place-items:center;
+  background: rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.15);
+  cursor:pointer;
+}
+
+.aw-menu nav a{
+  display:block;
+  margin:.5rem 0;
+  color:#60a5fa;
+  text-decoration:none;
+  font-weight:500;
+}
+.aw-menu nav a:hover{ text-decoration:underline; }
+
+/* Étiquettes/états spéciaux dans le menu */
+.aw-menu .not-live{ color:#1e3a8a; font-weight:700; }
+.aw-menu .mint-soon{ color:#9ca3af; }
+
+/* Liens “no-underline” réutilisables */
+.no-underline{ text-decoration: none !important; }
+
+/* ========== Mise en page About / Roadmap (titres jaunes, centrage) ========== */
+.aw-page{
+  width:min(1100px, 92vw);
+  margin-inline:auto;
+  padding: 56px 16px;
+}
+
+.aw-title{
+  text-align:center;
+  color:#facc15;
+  font-weight:800;
+  letter-spacing:.3px;
+  font-size: clamp(28px, 4vw, 48px);
+  margin: 0 0 28px 0;
+}
+
+.about-text{
+  max-width: 900px;
+  margin-inline:auto;
+  text-align: center;
+  color:#cfe7ff;
+}
+.about-text b,
+.about-text strong,
+.about-text .key{
+  color:#facc15;
+  font-weight:700;
+}
+
+.roadmap{
+  display:grid;
+  justify-items:center;
+  row-gap: 36px;
+  margin-top: 14px;
+}
+.roadmap .phase{
+  width:min(900px, 92vw);
+}
+.roadmap .phase h3{
+  display:inline-flex;
+  align-items:center;
+  gap:.6rem;
+  color:#eaf2ff;
+  font-weight:700;
+  font-size: clamp(18px, 2.3vw, 28px);
+  margin: 6px 0 10px 0;
+}
+.roadmap .phase ul{
+  list-style:none;
+  padding:0;
+  margin: 8px 0 0 0;
+  text-align:left;
+}
+.roadmap .phase li{
+  display:flex;
+  gap:.6rem;
+  align-items:flex-start;
+  margin:.28rem 0;
+  color:#cfe7ff;
+}
+.roadmap .phase li::before{
+  content:"•";
+  display:inline-block;
+  margin-top:.45rem;
+  opacity:.6;
 }
