@@ -7,8 +7,7 @@ html, body { height: 100%; }
 body{
   margin:0;
 
-  /* NOUVEAU : gradient élastique qui couvre toute la fenêtre */
-  background-color: #0b2a6b; /* couleur de secours sombre */
+  background-color: #0b2a6b; 
   background-image: radial-gradient(
     farthest-corner at 50% 30%,
     #60a5fa 0%,
@@ -16,14 +15,14 @@ body{
     #1e3a8a 100%
   );
   background-repeat: no-repeat;
-  background-attachment: fixed;   /* pas de “cassure” au scroll desktop */
-  background-size: cover;         /* couvre toute la fenêtre, peu importe la taille */
+  background-attachment: fixed;   
+  background-size: cover;         
 
   color:#eaf2ff;
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-/* ========== Home centré (avec “filets de sécurité”) ========== */
+/* ========== Home centré ========== */
 .stage{
   display:grid;
   place-items:center;
@@ -44,7 +43,7 @@ body{
   display:block;
 }
 
-/* ========== Logo final (AW) : agrandissement avec léger rebond) ========== */
+/* ========== Logo final (AW) ========== */
 .logoWrap{
   position: relative;
   display: inline-block;
@@ -65,7 +64,7 @@ body{
   100% { opacity:1; transform: scale(1); }
 }
 
-/* ========== Hamburger (fixé en haut à droite partout) ========== */
+/* ========== Hamburger ========== */
 .aw-burger{
   position:fixed;
   top:20px;
@@ -136,14 +135,13 @@ body{
 }
 .aw-menu nav a:hover{ text-decoration:underline; }
 
-/* Étiquettes/états spéciaux dans le menu */
+/* Étiquettes/états spéciaux */
 .aw-menu .not-live{ color:#1e3a8a; font-weight:700; }
 .aw-menu .mint-soon{ color:#9ca3af; }
 
-/* Liens “no-underline” réutilisables */
 .no-underline{ text-decoration: none !important; }
 
-/* ========== Mise en page About / Roadmap (titres jaunes, centrage) ========== */
+/* ========== Mise en page About / Roadmap ========== */
 .aw-page{
   width:min(1100px, 92vw);
   margin-inline:auto;
@@ -208,4 +206,25 @@ body{
   display:inline-block;
   margin-top:.45rem;
   opacity:.6;
+}
+
+/* ========== Responsive mobile (ajouté) ========== */
+@media (max-width: 768px) {
+  .canvasWrap, .canvasWrap canvas{
+    width: 95vw;
+    height: auto;
+  }
+  .finalLogo{
+    width: 85vw;
+  }
+  .aw-page{
+    padding: 32px 12px;
+  }
+  .about-text{
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .roadmap .phase h3{
+    font-size: 18px;
+  }
 }
