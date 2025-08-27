@@ -3,35 +3,34 @@ import React from "react";
 
 export default function AboutPage() {
   return (
-    <section className="mx-auto max-w-3xl px-6 py-14">
+    <section className="mx-auto max-w-4xl px-4 sm:px-6 py-10 sm:py-14">
       {/* Logo centré */}
-      <div className="flex justify-center mb-3">
+      <div className="flex justify-center mb-4 sm:mb-6">
         <img
           src="/aw-logo-yellow.png"
           alt="Angry Whales"
-          className="h-16 md:h-20 w-auto"
+          className="h-12 sm:h-16 md:h-20 w-auto"
         />
       </div>
 
-      {/* Titre plus grand + JAUNE (forcé en inline pour éviter tout override) */}
+      {/* Titre plus grand + JAUNE */}
       <h1
-        className="text-center font-extrabold mb-8"
+        className="text-center font-extrabold mb-6 sm:mb-10"
         style={{
-          color: "#facc15",        // text-yellow-400
-          fontSize: "56px",        // ~ text-5xl/6xl
-          lineHeight: "1.1",
+          color: "#facc15",
+          fontSize: "clamp(32px, 6vw, 56px)", // mobile → desktop fluide
+          lineHeight: "1.2",
         }}
       >
         About Angry Whales
       </h1>
 
-      {/* Texte bleu clair, mots-clés en JAUNE (inline) */}
+      {/* Texte adaptatif */}
       <div
-        className="space-y-6 text-center"
+        className="space-y-5 sm:space-y-6 text-center leading-relaxed"
         style={{
-          color: "rgba(239, 246, 255, 0.9)", // bleu clair
-          fontSize: "17px",
-          lineHeight: "1.75",
+          color: "rgba(239, 246, 255, 0.9)",
+          fontSize: "clamp(15px, 2vw, 17px)", // petit mobile → grand écran
         }}
       >
         <p>

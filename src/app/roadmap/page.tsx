@@ -47,27 +47,26 @@ const SECTIONS: Sect[] = [
 
 export default function RoadmapPage() {
   return (
-    <section className="mx-auto max-w-3xl px-6 py-14">
+    <section className="mx-auto max-w-4xl px-4 sm:px-6 py-10 sm:py-14">
       {/* Logo centré */}
-      <div className="flex justify-center mb-3">
+      <div className="flex justify-center mb-4 sm:mb-6">
         <img
           src="/aw-logo-yellow.png"
           alt="Angry Whales"
-          className="h-16 md:h-20 w-auto"
+          className="h-12 sm:h-16 md:h-20 w-auto"
         />
       </div>
 
-      {/* Titre principal (même taille que About, JAUNE) */}
+      {/* Titre principal (même logique que About) */}
       <h1
-        className="text-center font-extrabold"
+        className="text-center font-extrabold mb-8 sm:mb-10"
         style={{
           color: "#facc15",
-          fontSize: "56px",
-          lineHeight: "1.1",
-          marginBottom: "28px",
+          fontSize: "clamp(32px, 6vw, 56px)", // mobile → desktop
+          lineHeight: "1.2",
         }}
       >
-        Angry Whales – Roadmap
+        Angry Whales — Roadmap
       </h1>
 
       {/* Colonne centrée */}
@@ -80,18 +79,24 @@ export default function RoadmapPage() {
   );
 }
 
-/** Une section centrée : emoji + titre alignés, puces centrées sous le titre */
+/** Une section centrée : emoji + titre sur une même ligne, puis puces centrées */
 function Section({ emoji, title, items }: Sect) {
   return (
     <div className="w-full">
       {/* Ligne de titre centrée */}
       <div className="flex items-center justify-center gap-3">
-        <span className="select-none leading-none text-2xl">{emoji}</span>
+        <span
+          className="select-none leading-none"
+          style={{ fontSize: "clamp(20px, 3.2vw, 28px)" }}
+          aria-hidden
+        >
+          {emoji}
+        </span>
         <h2
           className="font-extrabold text-center"
           style={{
-            color: "rgba(239,246,255,0.95)", // bleu clair
-            fontSize: "26px",
+            color: "rgba(239,246,255,0.95)",
+            fontSize: "clamp(18px, 3.2vw, 28px)",
             lineHeight: "1.25",
           }}
         >
@@ -104,8 +109,8 @@ function Section({ emoji, title, items }: Sect) {
         <ul
           className="list-disc list-inside text-center space-y-2"
           style={{
-            color: "rgba(239,246,255,0.9)", // bleu clair
-            fontSize: "17px",
+            color: "rgba(239,246,255,0.9)",
+            fontSize: "clamp(15px, 2vw, 17px)",
             lineHeight: "1.75",
           }}
         >
