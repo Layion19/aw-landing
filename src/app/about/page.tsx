@@ -13,12 +13,12 @@ export default function AboutPage() {
         />
       </div>
 
-      {/* Titre fluide (mobile → desktop) */}
+      {/* Titre plus grand + JAUNE */}
       <h1
         className="text-center font-extrabold mb-6 sm:mb-10"
         style={{
           color: "#facc15",
-          fontSize: "clamp(26px, 5.6vw, 52px)",
+          fontSize: "clamp(32px, 6vw, 56px)", // mobile → desktop fluide
           lineHeight: "1.2",
         }}
       >
@@ -30,9 +30,7 @@ export default function AboutPage() {
         className="space-y-5 sm:space-y-6 text-center leading-relaxed"
         style={{
           color: "rgba(239, 246, 255, 0.9)",
-          fontSize: "clamp(15px, 3.4vw, 17px)",
-          lineHeight: "1.65",
-          wordBreak: "break-word",
+          fontSize: "clamp(15px, 2vw, 17px)", // petit mobile → grand écran
         }}
       >
         <p>
@@ -54,14 +52,14 @@ export default function AboutPage() {
           Our mission is clear: unite an engaged{" "}
           <span style={{ color: "#facc15" }}>community</span>, bring real{" "}
           <span style={{ color: "#facc15" }}>value</span> to holders, and grow
-          into a <span style={{ color: "#facc15" }}>long-term project</span> that
-          goes far beyond the digital space.
+          into a <span style={{ color: "#facc15" }}>long-term project</span>{" "}
+          that goes far beyond the digital space.
         </p>
 
         <p>
           Through partnerships, exclusive drops, and both physical and digital
-          activations, we’re laying the foundation for a strong, innovative brand
-          deeply rooted in <span style={{ color: "#facc15" }}>Web3</span>.
+          activations, we’re laying the foundation for a strong, innovative
+          brand deeply rooted in <span style={{ color: "#facc15" }}>Web3</span>.
         </p>
 
         <p>
@@ -70,6 +68,15 @@ export default function AboutPage() {
           <span style={{ color: "#facc15" }}>ambition</span>, and{" "}
           <span style={{ color: "#facc15" }}>power</span>.
         </p>
+      </div>
+
+      {/* ✅ Image ajoutée en bas */}
+      <div className="mt-8 sm:mt-10 flex justify-center">
+        <img
+          src="/about-whale.png"
+          alt="About Angry Whales artwork"
+          className="max-w-full h-auto rounded-xl shadow-lg"
+        />
       </div>
     </section>
   );
