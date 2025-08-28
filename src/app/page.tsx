@@ -1,3 +1,4 @@
+// src/app/page.tsx
 "use client";
 import React from "react";
 
@@ -19,9 +20,67 @@ export default function Page() {
   const FILL_DURATION = 2600;
   const PAUSE_BETWEEN = 420;
   const BUBBLES_PER_FRAME = 14;
-  const BUBBLE_MIN = 4,
-    BUBBLE_MAX = 10;
+  const BUBBLE_MIN = 4, BUBBLE_MAX = 10;
 
+  const commonFontSizeRef = React.useRef<number>(0);
+  const lastSizeRef = React.useRef<{ W: number; H: number }>({ W: 0, H: 0 });
+
+  // Garde-fou : forcer final si l'anim n'aboutit pas
+  React.useEffect(() => {
+    const total = WORDS.length * (FILL_DURATION + PAUSE_BETWEEN) + 800;
+    const t = setTimeout(() => setPhase("final"), total);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Calcule une font commune (basée sur le mot le plus long)
+  React.useLayoutEffect(() => {
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+
+    const dpr = Math.max(1, Math.floor(window.devicePixelRatio || 1));
+
+    const compute = () => {
+      const Wcss = wrap.clientWidth;
+      const Hcss = wrap.clientHeight;
+      if (!Wcss || !Hcss) return;
+
+      const W = Math.floor(Wcss * dpr);
+      const H = Math.floor(Hcss * dpr);
+
+      if (lastSizeRef.current.W === W && lastSizeRef.current.H === H && commonFontSizeRef.current > 0) return;
+      lastSizeRef.current = { W, H };
+
+      const ctx = document.createElement("canvas").getContext("2d")!;
+      let fs = Math.round(H * HEIGHT_RATIO);
+      const maxTextWidth = W * (1 - SIDE_PADDING * 2);
+
+      const measure = (word: string, size: number) => {
+        ctx.font = `900 ${size}px ${FONT_FAMILY}`;
+        return ctx.measureText(word).width;
+      };
+
+      while (true) {
+        const widest = Math.max(...WORDS.map(w => measure(w, fs)));
+        if (widest <= maxTextWidth || fs <= 12) break;
+        fs = Math.max(12, Math.floor(fs * 0.95));
+      }
+      commonFontSizeRef.current = fs;
+    };
+
+    compute();
+    const ro = new ResizeObserver(() => compute());
+    ro.observe(wrap);
+    const onResize = () => compute();
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
+
+  // Animation mot par mot
   React.useEffect(() => {
     if (phase === "final") return;
 
@@ -30,6 +89,8 @@ export default function Page() {
     const dpr = Math.max(1, Math.floor(window.devicePixelRatio || 1));
     const W = Math.floor(wrap.clientWidth * dpr);
     const H = Math.floor(wrap.clientHeight * dpr);
+    if (W === 0 || H === 0) return;
+
     canvas.width = W;
     canvas.height = H;
 
@@ -47,20 +108,7 @@ export default function Page() {
     const rctx = rain.getContext("2d")!;
 
     const word = WORDS[wordIndex];
-    const measure = document.createElement("canvas").getContext("2d")!;
-    let fontSize = Math.round(H * HEIGHT_RATIO);
-
-    const measureWidth = (fs: number) => {
-      measure.font = `900 ${fs}px ${FONT_FAMILY}`;
-      return measure.measureText(word).width;
-    };
-
-    const maxTextWidth = W * (1 - SIDE_PADDING * 2);
-    let w = measureWidth(fontSize);
-    while (w > maxTextWidth) {
-      fontSize = Math.max(12, Math.floor(fontSize * 0.95));
-      w = measureWidth(fontSize);
-    }
+    const fontSize = commonFontSizeRef.current || Math.round(H * HEIGHT_RATIO);
 
     // Texte masque (blanc)
     mctx.clearRect(0, 0, W, H);
@@ -73,13 +121,17 @@ export default function Page() {
     type Bubble = { x: number; y: number; r: number; vy: number; life: number };
     const bubbles: Bubble[] = [];
 
+    const meas = document.createElement("canvas").getContext("2d")!;
+    meas.font = `900 ${fontSize}px ${FONT_FAMILY}`;
+    const w = meas.measureText(word).width;
+
     const start = performance.now();
     let raf = 0;
 
     function spawn(levelY: number, width: number) {
       for (let i = 0; i < BUBBLES_PER_FRAME; i++) {
         const r = (BUBBLE_MIN + Math.random() * (BUBBLE_MAX - BUBBLE_MIN)) * (dpr * 0.6);
-        const x = (W - w) / 2 + Math.random() * width;
+        const x = (W - width) / 2 + Math.random() * width;
         const y = levelY + Math.random() * (H - levelY) + r;
         const vy = -((H * 0.003) + Math.random() * (H * 0.0045));
         bubbles.push({ x, y, r, vy, life: 0 });
@@ -163,20 +215,29 @@ export default function Page() {
     };
   }, [wordIndex, phase]);
 
+  const isFinal = phase === "final";
+
   return (
     <main className="relative">
-      <div className="home-center">
-        {phase !== "final" ? (
-          <div ref={wrapRef} className="canvasWrap">
-            <canvas ref={canvasRef} />
+      <div className="home-center relative">
+        {/* Canvas */}
+        <div
+          ref={wrapRef}
+          className="canvasWrap"
+          style={{ display: isFinal ? "none" : "block" }}
+        >
+          <canvas ref={canvasRef} />
+        </div>
+
+        {/* Logo final (même gabarit pour centrage identique) */}
+        <div
+          className="canvasWrap flex items-center justify-center"
+          style={{ display: isFinal ? "flex" : "none" }}
+        >
+          <div className="logoWrap" style={{ zIndex: 100, position: "relative" }}>
+            <img src="/aw-logo-yellow.png" alt="ANGRY WHALES" className="finalLogo" />
           </div>
-        ) : (
-          <div className="flex items-center justify-center w-full px-6">
-            <div className="logoWrap">
-              <img src="/aw-logo-yellow.png" alt="ANGRY WHALES" className="finalLogo" />
-            </div>
-          </div>
-        )}
+        </div>
       </div>
     </main>
   );

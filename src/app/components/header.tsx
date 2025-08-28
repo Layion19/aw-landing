@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 export default function Header() {
@@ -10,9 +10,28 @@ export default function Header() {
   const active = (href: string) =>
     pathname === href ? "font-extrabold text-yellow-400" : "";
 
+  // Lock scroll when menu is open (mobile-safe)
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  // Close menu on route change
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  const handleNavClick = () => setOpen(false);
+
   return (
     <>
-      {/* Burger : on l’affiche seulement si le menu n’est PAS ouvert */}
+      {/* Burger (shown only when closed) */}
       {!open && (
         <button
           aria-label="Ouvrir le menu"
@@ -32,7 +51,7 @@ export default function Header() {
         aria-hidden={!open}
       />
 
-      {/* Panneau latéral */}
+      {/* Off-canvas */}
       <aside
         className={`aw-menu ${open ? "open" : ""}`}
         role="dialog"
@@ -51,17 +70,23 @@ export default function Header() {
         </header>
 
         <nav>
-          <Link href="/" scroll={false} className={active("/")}>
+          <Link href="/" scroll={false} className={active("/")} onClick={handleNavClick}>
             Home
           </Link>
-          <Link href="/about" scroll={false} className={active("/about")}>
+          <Link href="/about" scroll={false} className={active("/about")} onClick={handleNavClick}>
             About
           </Link>
-          <Link href="/roadmap" scroll={false} className={active("/roadmap")}>
+          <Link href="/roadmap" scroll={false} className={active("/roadmap")} onClick={handleNavClick}>
             Roadmap
           </Link>
 
-          <div style={{ marginTop: 12, paddingTop: 10, borderTop: "1px dashed rgba(255,255,255,.12)" }}>
+          <div
+            style={{
+              marginTop: 12,
+              paddingTop: 10,
+              borderTop: "1px dashed rgba(255,255,255,.12)",
+            }}
+          >
             <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
               <span className="aw-mint">Mint</span>
               <span className="aw-badge aw-badge-dark">Not live yet</span>

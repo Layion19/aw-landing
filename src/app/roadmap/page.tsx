@@ -1,37 +1,33 @@
 // /src/app/roadmap/page.tsx
 import React from "react";
 
-type Sect = {
-  emoji: string;
-  title: string;
-  items: string[];
-};
+type Sect = { emoji: string; title: string; items: string[] };
 
 const SECTIONS: Sect[] = [
   {
     emoji: "🧱",
     title: "Q3 2025 – Genesis Surge",
     items: [
-      "Mint the Collection : Launch of 4444 Angry Whales – each one unique and ready to conquer the deep.",
-      "Pod Formation : Building a strong, loyal, and engaged community from day one.",
-      "Role System & Holder Access : Private zones unlocked for holders: alpha chats, sneak peeks, exclusive perks.",
+      "Mint the Collection: Launch of 4444 Angry Whales – each one unique and ready to conquer the deep.",
+      "Pod Formation: Building a strong, loyal, and engaged community from day one.",
+      "Role System & Holder Access: Private zones unlocked for holders: alpha chats, sneak peeks, exclusive perks.",
     ],
   },
   {
     emoji: "🌊",
     title: "Q4 2025 – Abyss Expansion",
     items: [
-      "Start Creating Value for Holders : Exploring revenue mechanics (royalty sharing, raffles).",
-      "Strategic Web3 Partnerships : Partnering with solid NFT projects to expand the ecosystem.",
+      "Start Creating Value for Holders: Exploring revenue mechanics (royalty sharing, raffles).",
+      "Strategic Web3 Partnerships: Partnering with solid NFT projects to expand the ecosystem.",
     ],
   },
   {
     emoji: "🧩",
     title: "Q1–Q2 2026 – Brand Awakening",
     items: [
-      "Physical Brand Launch : The Angry Whales real-world market goes live (merch, collectibles, IRL experiences).",
-      "Holder Ecosystem Activation : Exclusive drops, passive revenue streams, spin-off access.",
-      "Web3 x IRL Collaborations : Bridging digital and real: events, pop-ups, artist collabs.",
+      "Physical Brand Launch: The Angry Whales real-world market goes live (merch, collectibles, IRL experiences).",
+      "Holder Ecosystem Activation: Exclusive drops, passive revenue streams, spin-off access.",
+      "Web3 x IRL Collaborations: Bridging digital and real: events, pop-ups, artist collabs.",
     ],
   },
   {
@@ -57,12 +53,12 @@ export default function RoadmapPage() {
         />
       </div>
 
-      {/* Titre principal (même logique que About) */}
+      {/* Titre principal (fluide) */}
       <h1
         className="text-center font-extrabold mb-8 sm:mb-10"
         style={{
           color: "#facc15",
-          fontSize: "clamp(32px, 6vw, 56px)", // mobile → desktop
+          fontSize: "clamp(26px, 5.6vw, 52px)",
           lineHeight: "1.2",
         }}
       >
@@ -79,11 +75,10 @@ export default function RoadmapPage() {
   );
 }
 
-/** Une section centrée : emoji + titre sur une même ligne, puis puces centrées */
 function Section({ emoji, title, items }: Sect) {
   return (
     <div className="w-full">
-      {/* Ligne de titre centrée */}
+      {/* Ligne de titre */}
       <div className="flex items-center justify-center gap-3">
         <span
           className="select-none leading-none"
@@ -104,14 +99,15 @@ function Section({ emoji, title, items }: Sect) {
         </h2>
       </div>
 
-      {/* Puces centrées (texte et bullets) */}
+      {/* Puces centrées */}
       <div className="mt-3 flex justify-center">
         <ul
           className="list-disc list-inside text-center space-y-2"
           style={{
             color: "rgba(239,246,255,0.9)",
-            fontSize: "clamp(15px, 2vw, 17px)",
-            lineHeight: "1.75",
+            fontSize: "clamp(14px, 3.4vw, 17px)",
+            lineHeight: "1.7",
+            wordBreak: "break-word",
           }}
         >
           {items.map((it, i) => (
