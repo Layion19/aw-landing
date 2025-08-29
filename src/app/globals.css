@@ -200,3 +200,64 @@ img, video, canvas, svg { max-width: 100%; height: auto; display: block; }
     margin-bottom: 0px;
   }
 }
+
+/* ===== Waves band behind the stickers ===== */
+.wave-band {
+  position: fixed;            /* stays glued to the bottom of the screen */
+  left: 0; right: 0; bottom: 0;
+  height: 180px;              /* ≈ mid-height of your 320px stickers; tweak if needed */
+  z-index: 6;                 /* < whale stickers (z 20) but > page background */
+  overflow: hidden;
+  pointer-events: none;       /* never blocks clicks */
+}
+
+/* Two parallax layers */
+.wave {
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 200%;                /* we scroll half the width to loop seamlessly */
+  height: 100%;
+  animation: waveMove 12s linear infinite;
+  opacity: .8;
+}
+
+.wave.wave2 {
+  bottom: 8px;                /* slight vertical offset */
+  animation-duration: 18s;    /* slower for parallax effect */
+  opacity: .5;
+}
+
+@keyframes waveMove {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ===== Vagues fluides (plus de crêtes + bleus variés) ===== */
+.wave-band {
+  position: absolute;
+  inset: auto 0 0 0;      /* colle en bas, occupe toute la largeur */
+  height: 220px;          /* ajuste la hauteur visuelle des vagues */
+  overflow: hidden;
+  z-index: 1;             /* derrière les whales collées au bas */
+}
+
+.wave-svg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;            /* étire sur toute la largeur */
+  height: 100%;
+  display: block;
+}
+
+/* Les whales restent par-dessus les vagues */
+.whalesLayer { z-index: 2; }
+
+/* Optionnel: si tu veux un léger fondu en haut de la bande de vagues */
+.wave-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.08), transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
