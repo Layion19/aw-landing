@@ -17,7 +17,7 @@ export default function Page() {
   const FONT_FAMILY = "Nosifer, cursive";
   const HEIGHT_RATIO = 0.5;
   const SIDE_PADDING = 0.08;
-  const FILL_DURATION = 1400;
+  const FILL_DURATION = 800;
   const PAUSE_BETWEEN = 420;
   const BUBBLES_PER_FRAME = 14;
   const BUBBLE_MIN = 4, BUBBLE_MAX = 10;
