@@ -163,13 +163,40 @@ img, video, canvas, svg { max-width: 100%; height: auto; display: block; }
 .roadmap .phase li{
   display:flex; gap:.6rem; align-items:flex-start;
   margin:.28rem 0; color:#cfe7ff;
-  font-size: clamp(14px, 3.6vw, 17px); /* ✅ lisible en mobile */
+  font-size: clamp(14px, 3.6vw, 17px);
 }
 .roadmap .phase li::before{ content:"•"; display:inline-block; margin-top:.45rem; opacity:.6; }
+
+/* ========== Whales en bas (pas d'effet bump) ========== */
+.whalesLayer{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;      /* ne bloque pas les clics */
+  z-index: 8;                /* sous .logoWrap (10), au-dessus du fond */
+}
+.whaleSticker{
+  position: absolute;
+  bottom: -0;                 /* collé en bas */
+  height: 500px;             /* même taille pour alignement */
+  width: auto;
+  object-fit: contain;
+  transform: none !important; /* PAS d'animation/bump */
+  animation: none !important;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,.25));
+  margin-bottom: 0px;       /* ← ajuste cette valeur pour remonter/descendre */
+}
+.whaleSticker.left  { left: 30px; }
+.whaleSticker.right { right: 30px; }
 
 /* ========== Responsive mobile ========== */
 @media (max-width: 768px) {
   .canvasWrap, .canvasWrap canvas{ width: 95vw; height: auto; }
   .finalLogo{ width: 85vw; }
   .aw-page{ padding: 32px 12px; }
+
+  /* whales un peu plus petites en mobile */
+  .whaleSticker{
+    height: 200px;
+    margin-bottom: 16px;
+  }
 }

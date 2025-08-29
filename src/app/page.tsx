@@ -17,7 +17,7 @@ export default function Page() {
   const FONT_FAMILY = "Nosifer, cursive";
   const HEIGHT_RATIO = 0.5;
   const SIDE_PADDING = 0.08;
-  const FILL_DURATION = 2600;
+  const FILL_DURATION = 1400;
   const PAUSE_BETWEEN = 420;
   const BUBBLES_PER_FRAME = 14;
   const BUBBLE_MIN = 4, BUBBLE_MAX = 10;
@@ -25,15 +25,14 @@ export default function Page() {
   const commonFontSizeRef = React.useRef<number>(0);
   const lastSizeRef = React.useRef<{ W: number; H: number }>({ W: 0, H: 0 });
 
-  // Garde-fou : forcer final si l'anim n'aboutit pas
+  // Garde-fou final
   React.useEffect(() => {
     const total = WORDS.length * (FILL_DURATION + PAUSE_BETWEEN) + 800;
     const t = setTimeout(() => setPhase("final"), total);
     return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Calcule une font commune (basée sur le mot le plus long)
+  // Calcule une font commune (mot le plus long)
   React.useLayoutEffect(() => {
     const wrap = wrapRef.current;
     if (!wrap) return;
@@ -217,28 +216,45 @@ export default function Page() {
 
   const isFinal = phase === "final";
 
-  return (
-    <main className="relative">
-      <div className="home-center relative">
-        {/* Canvas */}
-        <div
-          ref={wrapRef}
-          className="canvasWrap"
-          style={{ display: isFinal ? "none" : "block" }}
-        >
-          <canvas ref={canvasRef} />
-        </div>
+return (
+  <main className="relative">
+    <div className="home-center relative">
+      {/* Canvas (phase texte) */}
+      <div
+        ref={wrapRef}
+        className="canvasWrap"
+        style={{ display: isFinal ? "none" : "block" }}
+      >
+        <canvas ref={canvasRef} />
+      </div>
 
-        {/* Logo final (même gabarit pour centrage identique) */}
-        <div
-          className="canvasWrap flex items-center justify-center"
-          style={{ display: isFinal ? "flex" : "none" }}
-        >
-          <div className="logoWrap" style={{ zIndex: 100, position: "relative" }}>
-            <img src="/aw-logo-yellow.png" alt="ANGRY WHALES" className="finalLogo" />
-          </div>
+      {/* Logo final */}
+      <div
+        className="canvasWrap flex items-center justify-center"
+        style={{ display: isFinal ? "flex" : "none" }}
+      >
+        <div className="logoWrap" style={{ zIndex: 100, position: "relative" }}>
+          <img src="/aw-logo-yellow.png" alt="ANGRY WHALES" className="finalLogo" />
         </div>
       </div>
-    </main>
-  );
+    </div>
+
+    {/* Whales décoratives (affichées seulement en phase finale) */}
+    {isFinal && (
+      <div className="whalesLayer" aria-hidden="true">
+        <img
+          src="/whale-bottom-left.png"
+          alt=""
+          className="whaleSticker left"
+        />
+        <img
+          src="/whale-bottom-right.png"
+          alt=""
+          className="whaleSticker right"
+        />
+      </div>
+    )}
+  </main>
+);
+
 }
