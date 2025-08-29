@@ -196,7 +196,7 @@ img, video, canvas, svg { max-width: 100%; height: auto; display: block; }
 
   /* whales un peu plus petites en mobile */
   .whaleSticker{
-    height: 200px;
-    margin-bottom: 16px;
+    height: 120px;
+    margin-bottom: 0px;
   }
 }
